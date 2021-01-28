@@ -1,23 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
+    private float movementX;
+    private float movementY;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
-
-    void FixedUpdate ()
+    void OnMove(InputValue movementValue)
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-
-        rb.AddForce(movement * speed);
+        Vector2 movementVector = movementValue.Get<Vector2>();
+        movementX = movementVector.x;
+        movementY = movementVector.y;
+    }
+    void FixedUpdate()
+    {
+        Vector3 movement = new Vector3(movementX, 0.0f, movementY);
+        rb.AddForce(movement);
     }
 }
